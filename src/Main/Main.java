@@ -8,17 +8,17 @@ public class Main {
     public static void main(String[] args) {
         List<TaxPayer> employees = new ArrayList<>();
         //type 1: Employee, type 2: EmployeeUser
-        employees.add(new TaxPayer("John", 5, 1));
-        employees.add(new TaxPayer("Joe", 10, 1));
-        employees.add(new TaxPayer("Mike", 18, 1));
-        employees.add(new TaxPayer("Ba", 32, 1));
-        employees.add(new TaxPayer("Smith", 52, 1));
-        employees.add(new TaxPayer("Joe", 80, 1));
-        employees.add(new TaxPayer("Mike", 81, 1));
+        employees.add(new TaxPayer("John", 5, 1, 1));
+        employees.add(new TaxPayer("Joe", 10, 1, 1));
+        employees.add(new TaxPayer("Mike", 18, 1, 1));
+        employees.add(new TaxPayer("Ba", 32, 1,1));
+        employees.add(new TaxPayer("Smith", 52, 1,1));
+        employees.add(new TaxPayer("Joe", 80, 1, 1));
+        employees.add(new TaxPayer("Mike", 81, 1,1));
 
-        employees.add(new TaxPayer("John", 82, 2));
-        employees.add(new TaxPayer("Smith", 82, 2));
-        employees.add(new TaxPayer("Mike", 82, 2));
+        employees.add(new TaxPayer("John", 82, 2, 1));
+        employees.add(new TaxPayer("Smith", 82, 2, 1));
+        employees.add(new TaxPayer("Mike", 82, 2, 1));
         int i = 1;
         for (TaxPayer a : employees){
             System.out.println("Employee " + i);
@@ -41,14 +41,14 @@ public class Main {
             i++;
             System.out.println();
         }
-        List<TaxPayer> taxPayersMoreThanFive = new ArrayList<>();
+        List<TaxPayer> employeeHaveToPayTax = new ArrayList<>();
         for(TaxPayer a : employees){
-            if(a.getGrossSalary() * (100 - a.getBHTN() - a.getBHYT() - a.getBHXH()) / 100 > 5){
-                taxPayersMoreThanFive.add(a);
+            if(a.getTax() > 0){
+                employeeHaveToPayTax.add(a);
             }
         }
         i = 1;
-        for(TaxPayer a : taxPayersMoreThanFive){
+        for(TaxPayer a : employeeHaveToPayTax){
             System.out.println("Employee " + i);
             System.out.println(a.toString());
             i++;
