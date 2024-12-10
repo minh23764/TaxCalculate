@@ -2,48 +2,47 @@ package Class;
 
 public class TaxPayer {
     private String name;
-    private float grossSalary;
-    private float netSalary;
+    private double grossSalary;
+    private double netSalary;
     private int type;
-    private int tax ;
-    private float BHXH;
-    private float BHTN;
-    private float BHYT;
+    private double tax;
+    private double BH;
+    private int dependent;
+    private double taxedSalary;
+    private double salaryBeforeTax;
 
-    public TaxPayer(String name, float grossSalary, int type) {
+
+    public TaxPayer(String name, double grossSalary, int type, int dependent) {
         this.name = name;
         this.grossSalary = grossSalary;
         this.type = type;
-        this.tax = taxCal(grossSalary);
         if(this.type == 1){
-            this.BHTN = 1;
-            this.BHYT = 1.5f;
-            this.BHXH = 8;
+            this.BH = 10.5;
         }else {
-            this.BHTN = 1;
-            this.BHYT = 3;
-            this.BHXH = 14;
+            this.BH = 21.5;
         }
-        this.netSalary = (grossSalary * (100 - BHTN - BHYT - BHXH) / 100) * (100 -tax) /100;
+        this.dependent = dependent;
+        this.salaryBeforeTax = grossSalary * (100 - BH) / 100;
+        this.taxedSalary = Math.round(Math.max(0, salaryBeforeTax - 11 - (4.4 * dependent)) * 1000.0) / 1000.0;
+        this.tax = Math.round(taxCal(taxedSalary) * 1000.0) / 1000.0;
+        this.netSalary = Math.round((salaryBeforeTax - tax) * 1000.0) / 1000.0 ;
     }
 
-    public int getTax() {
+    public double getTax() {
         return tax;
     }
-
-    public float getBHXH() {
-        return BHXH;
-    }
-
-    public float getBHTN() {
-        return BHTN;
-    }
-
-    public float getBHYT() {
-        return BHYT;
-    }
-
-
+//
+//    public float getBHXH() {
+//        return BHXH;
+//    }
+//
+//    public float getBHTN() {
+//        return BHTN;
+//    }
+//
+//    public float getBHYT() {
+//        return BHYT;
+//    }
 
     public String getName() {
         return name;
@@ -53,19 +52,19 @@ public class TaxPayer {
         this.name = name;
     }
 
-    public float getGrossSalary() {
+    public double getGrossSalary() {
         return grossSalary;
     }
 
-    public void setGrossSalary(float grossSalary) {
+    public void setGrossSalary(double grossSalary) {
         this.grossSalary = grossSalary;
     }
 
-    public float getNetSalary() {
+    public double getNetSalary() {
         return netSalary;
     }
 
-    public void setNetSalary(float netSalary) {
+    public void setNetSalary(double netSalary) {
         this.netSalary = netSalary;
     }
 
@@ -74,25 +73,25 @@ public class TaxPayer {
     }
 
     public void setType(int type) {
-        if(type > 3 || type < 1)
+        if(type == 1|| type == 2)
             this.type = type;
     }
 
-    private int taxCal(float grossSalary){
-        if(grossSalary <= 5)
-            return 5;
-        else if (grossSalary >5 & grossSalary <=10)
-            return 10;
-        else if(grossSalary > 10 & grossSalary <=18)
-            return 15;
-        else if (grossSalary > 18 & grossSalary <=32)
-            return 20;
-        else if (grossSalary > 32 & grossSalary <=52)
-            return 25;
-        else if (grossSalary > 52 & grossSalary <=80)
-            return 30;
+    private double taxCal(double taxedSalary){
+        if(taxedSalary <= 5)
+            return taxedSalary * 5/100;
+        else if (taxedSalary <=10)
+            return taxedSalary * 10/100 - 0.25;
+        else if(taxedSalary <=18)
+            return taxedSalary * 15/100 - 0.75;
+        else if (taxedSalary <=32)
+            return taxedSalary * 20/100 - 1.65;
+        else if (taxedSalary <=52)
+            return taxedSalary * 25/100 - 3.25;
+        else if (taxedSalary <=80)
+            return taxedSalary * 30/100 - 5.85;
         else
-            return 35;
+            return taxedSalary * 35/100 - 9.85;
     }
 
     @Override
@@ -100,11 +99,14 @@ public class TaxPayer {
         return "Name: " + this.name + "\n"
                 + "Gross Salary: " + this.grossSalary + "tr" + "\n"
                 + "Type: " + this.type + "\n"
-                + "Tax: " + this.tax + "%" + "\n"
-                + "BHXH: " + this.BHXH + "%" + "\n"
-                + "BHTN: " + this.BHTN + "%" + "\n"
-                + "BHYT: " + this.BHYT + "%" + "\n"
-                + "Total Tax: " + (this.BHTN + this.BHYT + this.BHXH + (float)this.tax) + "%" + "\n"
+                + "Dependant: " + this.dependent + "\n"
+                + "BH: " + this.BH + "%" + "\n"
+                + "Salary Before Tax: " + this.salaryBeforeTax + "tr" + "\n"
+                + "Taxed salary: " + this.taxedSalary + "tr" + "\n"
+                + "Tax: " + this.tax + "tr" + "\n"
+//                + "BHXH: " + this.BHXH + "%" + "\n"
+//                + "BHTN: " + this.BHTN + "%" + "\n"
+//                + "BHYT: " + this.BHYT + "%" + "\n"
                 + "Net Salary: "  + this.netSalary + "tr";
     }
 }
